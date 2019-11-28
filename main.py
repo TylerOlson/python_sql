@@ -1,31 +1,31 @@
 from database import *
+import cmd
 
 database_manager = DatabaseManager()
 
+
 def main():
     print("Epic database")
+    CmdTing().cmdloop()
 
-    listener()
 
-
-def listener():
-    args = input().split()
-    args_length = len(args)
-
-    if args[0] == "exit":
-        return
-
-    if args[0] == "CREATE":
-        if (args_length > 1):
-            if args[1] == "DATABASE":
-                if (args_length == 3):
-                    database_manager.create(args[2])
-
-    if args[0] == "list_databases":
+class CmdTing(cmd.Cmd):
+    def do_list(self, arg):
         database_manager.list_databases()
 
-    listener()
+    def do_create(self, arg):
+        args = arg.split()
+        if len(args) == 1:
+            database_manager.create(args[0])
+        else:
+            print("Supply a name for the database to create.")
 
+    def do_drop(self, arg):
+        args = arg.split()
+        if len(args) == 1:
+            database_manager.drop(args[0])
+        else:
+            print("Supply a name for the database to drop.")
 
 
 if __name__ == '__main__':
